@@ -8,6 +8,7 @@ defmodule LiveTestWeb.SearchLive.Results do
   alias Phoenix.LiveView.Socket
 
   @message ""
+  @query ""
 
   def render(assigns) do
     Phoenix.View.render(LiveTestWeb.SearchView, "results.html", assigns)
@@ -15,35 +16,23 @@ defmodule LiveTestWeb.SearchLive.Results do
 
 
   def mount(_, _, socket) do
-    # Logger.info "delayed"
-
-    #   case String.length(query) > 2 do
-    #     false ->
-    #       {:ok, assign(socket, message: "I need a little more to work with here!", colleges: @colleges, fields: @fields)}
-    #     true ->
-    #       colleges = Colleges.match_colleges(query)
-    #       fields = Fields.match_fields(query)
-    #       {:ok, assign(socket, colleges: colleges, fields: fields, message: "")}
-    #   end
       {:ok, socket}
   end
 
   def handle_params(%{"query" => query}, _url, socket) do
 
-    # if connected?(socket), do: Demo.Accounts.subscribe(id)
-
-    {:noreply, socket |> assign(query: query) |> hydrate()}
+    {:noreply, socket |> assign(query: query) |> fetch()}
   end
 
-  defp hydrate(%Socket{assigns: %{query: query}} = socket) do
+  defp fetch(%Socket{assigns: %{query: query}} = socket) do
 
     Logger.info "delayed"
 
     case String.length(query) > 2 do
       false ->
-        assign(socket, message: "Too short a search.. I need a little more to work with here! Give me at least 3 characters.")
+        assign(socket, message: "Too short a search.. I need a little more to work with here! Give me at least 3 characters.", query: "")
       true ->
-        assign(socket, message: "")
+        assign(socket, message: "", query: query)
     end
 
 

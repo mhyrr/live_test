@@ -34,12 +34,6 @@ defmodule LiveTestWeb.SearchLive.Search do
   end
 
   def handle_event("search", %{"q" => query}, socket) when byte_size(query) <= 100 do
-    # send(self(), {:search, query})
-    # {:noreply, assign(socket, query: query, result: "Searching...", loading: true, matches: [])}
-
-
-    IO.inspect(socket)
-
 
     Logger.info "doing a search"
     {:noreply, socket |> push_redirect(to:  Routes.live_path(socket, LiveTestWeb.SearchLive.Results, query ))}
@@ -49,8 +43,4 @@ defmodule LiveTestWeb.SearchLive.Search do
 
   end
 
-  def handle_info({:search, query}, socket) do
-
-
-  end
 end
